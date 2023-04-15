@@ -4,7 +4,7 @@ import { zkCredential } from '../utils/credential'
 const couchdbConfig = {
   user: 'admin',
   password: 'WsonEYErSarDsODisHALigUN',
-  host: '35.161.69.148'
+  host: '54.190.199.105'
 }
 
 export async function proofMerkleTree (tree: any, amount: number) {
@@ -23,41 +23,56 @@ export async function createMerkleTree () {
   const now = new Date()
   const time = new Date()
   time.setFullYear(now.getFullYear() + 1)
+  const credential = zkCredential
+  const address = '0xfa5e07F1634730A5006969B52fb808DecCBF6910'
+  const issuer = '0x4c3634736a8d1a6296cd79a200ee7729476de474'
+  const expired = time.getTime()
+  const value = amount
+  const revoke = 0
+  const payload = {
+    credential,
+    address,
+    issuer,
+    expired,
+    value,
+    revoke,
+  }
   return {
     tree: await createSMT([
-    { 
-      index: 0,
-      value: zkCredential,
-    },
-    { 
-      index: 1,
-      value: '0xfa5e07F1634730A5006969B52fb808DecCBF6910'
-    },
-    { 
-      index: 2,
-      value: '0x4c3634736a8d1a6296cd79a200ee7729476de474'
-    },
-    { 
-      index: 3,
-      value: time.getTime(),
-    },
-    { 
-      index: 4,
-      value: amount,
-    },
-    { 
-      index: 5,
-      value: 0,
-    },
-    { 
-      index: 6,
-      value: 'value'
-    },
-    { 
-      index: 7,
-      value: 'value'
-    },
-  ], couchdbConfig),
+      { 
+        index: 0,
+        value: credential,
+      },
+      { 
+        index: 1,
+        value: address,
+      },
+      { 
+        index: 2,
+        value: issuer
+      },
+      { 
+        index: 3,
+        value: expired,
+      },
+      { 
+        index: 4,
+        value: value,
+      },
+      { 
+        index: 5,
+        value: revoke,
+      },
+      { 
+        index: 6,
+        value: 'value'
+      },
+      { 
+        index: 7,
+        value: 'value'
+      },
+    ], couchdbConfig),
     amount,
+    payload,
   }
 }

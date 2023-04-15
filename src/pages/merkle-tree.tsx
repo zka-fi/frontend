@@ -7,6 +7,7 @@ function Page({ data }: {
   data: {
     tree: any,
     proof: any,
+    payload: any
   }
 }) {
   return (

@@ -21,7 +21,7 @@ const pages = [
     link: '/dai',
   },
   {
-    label: 'Create Proof',
+    label: 'Bank',
     link: '/merkle-tree'
   },
   {
@@ -45,7 +45,9 @@ export function ApplicationBar() {
     router.push(link)
   }
   return (
-    <AppBar position="static">
+    <AppBar position="static" style={{
+      backgroundColor: '#FFFFFF'
+    }}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <Typography
@@ -68,16 +70,13 @@ export function ApplicationBar() {
           </Typography>
 
           <Box sx={{ flexGrow: 1}}>
-            <Tabs value={0} onChange={handleChange} centered>
+            <Tabs value={value} onChange={handleChange} centered>
               {pages.map((page) => (
                 <Tab
                   component="a"
                   key={page.label}
                   label={page.label}
                   href={page.link}
-                  style={{
-                    color: 'white'
-                  }}
                   onClick={(e: any) => redirect(e, page.link)}
                 />
               ))}

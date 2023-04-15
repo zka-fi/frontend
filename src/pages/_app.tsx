@@ -13,10 +13,6 @@ import { AppBar, Box, Container } from '@mui/material'
 import { ApplicationBar } from '../components/Bar/AppBar'
 const theme = createTheme({
   palette: {
-    primary: {
-      // Purple and green play nicely together.
-      main: grey[900],
-    },
     secondary: {
       main: grey[200],
     },
