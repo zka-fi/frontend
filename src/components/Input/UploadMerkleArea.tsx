@@ -1,6 +1,6 @@
 import { TextField, Typography } from "@mui/material";
 
-export function UploadMerkleArea () {
+export function UploadMerkleArea ({ onChange}: any) {
   return (
     <TextField
       placeholder="Paste your Merkle Tree result here"
@@ -9,6 +9,7 @@ export function UploadMerkleArea () {
       style={{
         width: '100%'
       }}
+      onChange={(e) => onChange(e)}
     />
   )
 }

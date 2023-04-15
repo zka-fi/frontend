@@ -37,9 +37,6 @@ export function ApplicationBar() {
     e.preventDefault()
     router.push(link)
   }
-  function getCurrentPathIndex () {
-    return pages.findIndex(e => e.link === router.asPath)
-  } 
   return (
     <AppBar position="static">
       <Container maxWidth="xl">
@@ -64,7 +61,7 @@ export function ApplicationBar() {
           </Typography>
 
           <Box sx={{ flexGrow: 1, display: { md: 'flex' } }}>
-            <Tabs value={1} onChange={handleChange}>
+            <Tabs value={0} onChange={handleChange}>
               {pages.map((page) => (
                 <Tab
                   component="a"

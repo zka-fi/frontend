@@ -20,20 +20,11 @@ export async function exportSolidity({ proof, publicSignals }: any) {
   }
 }
 
-export async function generateProof(circuitInputs: any, filePathWASM: any, filePathZKEY: any) {
-  const { proof, publicSignals } = await groth16.fullProve(
-    circuitInputs,
-    filePathWASM,
-    filePathZKEY
-  )
-  const solidityProof = await exportSolidity({ proof, publicSignals })
-  return solidityProof
-}
-// TODO: generate proof for test circuit
-export async function createProof() {
-  const WASM_FILE_PATH = "/base.wasm"
-  const ZKEY_FILE_PATH = "/base.zkey"
-
+export async function generateProof(
+  amount: number,
+  filePathWASM: string = '/base.wasm',
+  filePathZKEY: string = '/base.zkey',
+) {
   const circuitInputs = {
     accountRoot: "0x27d7d6e3a855c2cff1234b9c249f25c97efaa6e1f67309dbe9f3c1983e3302d6",
     certValue: 9527,
@@ -43,14 +34,14 @@ export async function createProof() {
       "0x2258b1ae87b52b884ce173eb875bd74d675401aa4dc20c8989f080ce517f4c30"
     ],
     idx: [ 0, 0, 1 ],
-    borrowAmount: 100,
+    borrowAmount: amount,
   }
-
-  const proofData = await generateProof(
+  console.log(circuitInputs)
+  const { proof, publicSignals } = await groth16.fullProve(
     circuitInputs,
-    WASM_FILE_PATH,
-    ZKEY_FILE_PATH
+    filePathWASM,
+    filePathZKEY
   )
-  return proofData
+  const solidityProof = await exportSolidity({ proof, publicSignals })
+  return solidityProof
 }
-

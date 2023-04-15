@@ -12,8 +12,8 @@ export function ConnectButton ({children}: any) {
             >
               {
                 isConnected ? 
-                "Connected"
-                : "Not Connect"
+                "Disconnect"
+                : "Connect"
               }
             </Button>
           );
