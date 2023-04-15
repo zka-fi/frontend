@@ -12,6 +12,8 @@ import MenuItem from '@mui/material/MenuItem';
 import { ConnectButton } from '../Button/ConnectButton';
 import { Tab, Tabs } from '@mui/material';
 import { useRouter } from 'next/router';
+import { ApproveButton } from '../Button/ApproveButton';
+import { useAccount } from 'wagmi';
 
 const pages = [
   {
@@ -19,13 +21,18 @@ const pages = [
     link: '/dai',
   },
   {
-    label: 'Merkle Tree',
+    label: 'Create Proof',
     link: '/merkle-tree'
+  },
+  {
+    label: 'lender',
+    link: '/lender'
   },
 ]
 
 
 export function ApplicationBar() {
+  const { isConnected } = useAccount()
   const [value, setValue] = React.useState(0)
   const router = useRouter()
 
@@ -77,10 +84,10 @@ export function ApplicationBar() {
             </Tabs>
             
           </Box>
-
+          
           <Box sx={{ flexGrow: 0 }}>
-            <ConnectButton />
-          </Box>
+              <ConnectButton />
+            </Box>
         </Toolbar>
       </Container>
     </AppBar>

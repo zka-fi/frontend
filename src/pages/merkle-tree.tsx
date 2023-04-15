@@ -19,7 +19,7 @@ function Page({ data }: {
 export async function getServerSideProps() {
   // 呼叫其他api拿取資料
   const tree = await createMerkleTree()
-  const proof = await proofMerkleTree(tree)
+  const proof = await proofMerkleTree(tree.tree, tree.amount)
 
   // 傳送data到頁面的props
   return { 

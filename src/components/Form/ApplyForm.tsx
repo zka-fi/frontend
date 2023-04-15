@@ -24,7 +24,7 @@ export function ApplyForm ({ proof, tree}: any) {
           onClick={async () => {
             setLoading(true)
             setIsInit(true)
-            await randomSleep(5000)
+            await randomSleep(3000)
             setMerkleTree(JSON.stringify(tree, null, 2))
             setMerkleTreeProof(JSON.stringify(proof, null, 2))
             setLoading(false)

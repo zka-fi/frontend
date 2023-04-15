@@ -1,6 +1,7 @@
 import { Button, CircularProgress, Grid, TextField } from "@mui/material";
 import { useState } from "react";
 import { LoadingContent } from "../Loading/LoadingContent";
+import { ApproveButton } from "../Button/ApproveButton";
 
 export function BorrowForm ({ onSubmit, loading }: any) {
   const [amount, setAmount] = useState(0)
@@ -37,6 +38,9 @@ export function BorrowForm ({ onSubmit, loading }: any) {
       </Grid>
       <Grid container item xs={12} justifyContent="center">
         <Grid item>
+          <ApproveButton/>
+        </Grid>
+        <Grid item>
           <Button
             variant="contained"
             disabled={loading}
@@ -50,9 +54,9 @@ export function BorrowForm ({ onSubmit, loading }: any) {
              {
             loading ? (
               <>
-                generating proof
+                Borrowing...
                 <CircularProgress size={20} color="secondary"/>
-              </> ): 'generate proof'
+              </> ): 'Borrow!'
           }
           </Button>
         </Grid>

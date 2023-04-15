@@ -15,9 +15,9 @@ export async function exportSolidity({ proof, publicSignals }: any) {
     [b3, b4],
   ]
   const c: [BigNumber, BigNumber] = [c1, c2]
-  return {
+  return [
     a, b, c, inputs
-  }
+  ]
 }
 
 export async function generateProof(
@@ -30,7 +30,6 @@ export async function generateProof(
     ...merkle,
     borrowAmount: amount,
   }
-  console.log(circuitInputs)
   const { proof, publicSignals } = await groth16.fullProve(
     circuitInputs,
     filePathWASM,
