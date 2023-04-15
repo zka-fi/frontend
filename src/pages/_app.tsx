@@ -18,6 +18,9 @@ const theme = createTheme({
       main: grey[900],
     },
     secondary: {
+      main: grey[200],
+    },
+    error: {
       // This is green.A700 as hex.
       main: '#ef5350',
     },
