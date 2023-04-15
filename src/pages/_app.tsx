@@ -9,7 +9,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { purple, grey } from '@mui/material/colors';
 import Button from '@mui/material/Button';
 import { client } from '../wagmi'
-import { AppBar, Container } from '@mui/material'
+import { AppBar, Box, Container } from '@mui/material'
 import { ApplicationBar } from '../components/Bar/AppBar'
 const theme = createTheme({
   palette: {
@@ -37,7 +37,11 @@ function App({ Component, pageProps }: AppProps) {
         </NextHead>
         <ApplicationBar />
         <Container>
-          {mounted && <Component {...pageProps} />}
+          <Box sx={{
+            p: '8px',
+          }}>
+            {mounted && <Component {...pageProps} />}
+          </Box>
         </Container>
       </ConnectKitProvider>
       </ThemeProvider>

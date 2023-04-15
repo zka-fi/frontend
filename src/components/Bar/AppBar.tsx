@@ -10,6 +10,8 @@ import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import { ConnectButton } from '../Button/ConnectButton';
+import { Tab, Tabs } from '@mui/material';
+import { useRouter } from 'next/router';
 
 const pages = [
   {
@@ -22,8 +24,22 @@ const pages = [
   },
 ]
 
-export function ApplicationBar() {
 
+export function ApplicationBar() {
+  const [value, setValue] = React.useState(0)
+  const router = useRouter()
+
+  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+    setValue(newValue);
+  }
+
+  function redirect (e:  React.SyntheticEvent, link: string) {
+    e.preventDefault()
+    router.push(link)
+  }
+  function getCurrentPathIndex () {
+    return pages.findIndex(e => e.link === router.asPath)
+  } 
   return (
     <AppBar position="static">
       <Container maxWidth="xl">
@@ -42,20 +58,27 @@ export function ApplicationBar() {
               color: 'inherit',
               textDecoration: 'none',
             }}
+            onClick={(e) => redirect(e, '/')}
           >
             LOGO
           </Typography>
 
           <Box sx={{ flexGrow: 1, display: { md: 'flex' } }}>
-            {pages.map((page) => (
-              <Button
-                key={page.label}
-                href={page.link}
-                sx={{ my: 2, color: 'white', display: 'block' }}
-              >
-                {page.label}
-              </Button>
-            ))}
+            <Tabs value={1} onChange={handleChange}>
+              {pages.map((page) => (
+                <Tab
+                  component="a"
+                  key={page.label}
+                  label={page.label}
+                  href={page.link}
+                  style={{
+                    color: 'white'
+                  }}
+                  onClick={(e: any) => redirect(e, page.link)}
+                />
+              ))}
+            </Tabs>
+            
           </Box>
 
           <Box sx={{ flexGrow: 0 }}>
