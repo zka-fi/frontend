@@ -1,26 +1,20 @@
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline'
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline'
-import { daiAddress, zkafiAddress } from '../../utils/contract-address'
 import { erc20ABI, useAccount, useContractRead } from 'wagmi'
 import { Button } from '@mui/material'
 import { BigNumber } from 'ethers'
-import { useEffect, useState } from 'react'
 import { prepareWriteContract, writeContract } from '@wagmi/core'
+import { useDaiContractAddressHook, useZkafiContractAddressHook } from '../../hooks/useContractAddress.hook'
 
-export function ApproveButton ({disabled, reverse}: any) {
+export function ApproveButton ({disabled, reverse, isApproved}: any) {
+  const daiAddress =  useDaiContractAddressHook()
+  const zkafiAddress =  useZkafiContractAddressHook()
   let addressFrom = daiAddress
   let addressTo = zkafiAddress
   if(reverse) {
     addressFrom = zkafiAddress
     addressTo = daiAddress
   }
-  const { address } = useAccount()
-  const { data } = useContractRead({
-    address: addressFrom,
-    abi: erc20ABI,
-    functionName: 'allowance',
-    args: [address!, addressTo]
-  })
   async function approve () {
     const config = await prepareWriteContract({
       address: addressFrom,
@@ -36,13 +30,26 @@ export function ApproveButton ({disabled, reverse}: any) {
         <Button
           color="info"
           onClick={() => {
-            if(data?.lte(0)){
+            if(!isApproved){
               approve()
             }
           }}
         >
             {
-              !data?.lte(0) ? <CheckCircleOutlineIcon /> : <ErrorOutlineIcon />
+              isApproved ? 
+              (
+                <>
+                  <CheckCircleOutlineIcon /> 
+                  Approved
+                </>
+              )
+              : 
+              (
+                <>
+                  <ErrorOutlineIcon />
+                  Not Approved
+                </>
+              )
             }
         </Button>
       }

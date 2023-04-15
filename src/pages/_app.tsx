@@ -32,7 +32,7 @@ function App({ Component, pageProps }: AppProps) {
       <ThemeProvider theme={theme}>
       <ConnectKitProvider>
         <NextHead>
-          <title>Zk-fi</title>
+          <title>Zkafi</title>
         </NextHead>
         <ApplicationBar />
         <Container>

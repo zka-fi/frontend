@@ -6,31 +6,19 @@ import { writeContract, prepareWriteContract } from '@wagmi/core'
 import { useAccount, useFeeData } from "wagmi";
 import { zkafiABI } from "../contracts/zkafi";
 import { BigNumber } from "ethers";
-import { zkafiAddress } from "../utils/contract-address";
 import { RepayButton } from "../components/Button/RepayButton";
 import { ApproveButton } from "../components/Button/ApproveButton";
+import { useZkafiContractAddressHook } from "../hooks/useContractAddress.hook";
 
 export default function DaiPage () {
   const [ creatingProof, setCreatingProof ] = useState(false)
+  const zkafiAddress = useZkafiContractAddressHook()
   const { data } = useFeeData()
   async function proof (amount: number, merkle: any) {
     setCreatingProof(true)
     
     const result = await generateProof(amount, merkle)
       .then(async (zkProof) => {
-      //   const config = await prepareWriteContract({
-      //     address: '0xfcC488090791F6944A44D74c36c2af37080dF727',
-      //     abi: zkafiABI,
-      //     functionName: 'noPermissionRepay',
-      //     args: [100],
-      //   })
-      //   console.log(config)
-      //   const data = await writeContract({
-      //     ...config,
-
-      //   })
-      //   return data
-      // })
         const config = await prepareWriteContract({
           address: zkafiAddress,
           abi: zkafiABI,
@@ -63,14 +51,6 @@ export default function DaiPage () {
               }}
               loading={creatingProof}
             />
-          </Grid>
-          <Grid container item xs={12} justifyContent="center">
-            <Grid item>
-              <ApproveButton/>
-            </Grid>
-            <Grid item>
-              <RepayButton />
-            </Grid>
           </Grid>
         </Grid>
       </Grid>

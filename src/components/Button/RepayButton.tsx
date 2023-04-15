@@ -1,12 +1,13 @@
 import { Button } from "@mui/material"
-import { zkafiAddress } from "../../utils/contract-address"
 import { prepareWriteContract, writeContract } from '@wagmi/core'
 import { zkafiABI } from "../../contracts/zkafi"
 import { BigNumber } from "ethers"
 import { useState } from "react"
+import { useZkafiContractAddressHook } from "../../hooks/useContractAddress.hook"
 
 export function RepayButton () {
   const [loading, setLoading] = useState(false)
+  const zkafiAddress =  useZkafiContractAddressHook()
   async function repay () {
     const config = await prepareWriteContract({
       address: zkafiAddress,
