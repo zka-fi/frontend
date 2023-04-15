@@ -1,5 +1,4 @@
 import { Button, Card, CircularProgress, Grid } from "@mui/material";
-import { UploadMerkleArea } from "../components/Input/UploadMerkleArea";
 import { generateProof } from "../services/proof.service";
 import { BorrowForm } from "../components/Form/BorrowForm";
 import { useState } from "react";

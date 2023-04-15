@@ -60,8 +60,8 @@ export function ApplicationBar() {
             LOGO
           </Typography>
 
-          <Box sx={{ flexGrow: 1, display: { md: 'flex' } }}>
-            <Tabs value={0} onChange={handleChange}>
+          <Box sx={{ flexGrow: 1}}>
+            <Tabs value={0} onChange={handleChange} centered>
               {pages.map((page) => (
                 <Tab
                   component="a"
