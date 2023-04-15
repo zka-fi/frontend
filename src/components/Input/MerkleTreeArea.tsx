@@ -3,7 +3,6 @@ import { TextField, Typography } from "@mui/material";
 export function MerkleTreeArea ({ onChange, value}: any) {
   return (
     <TextField
-      placeholder="Paste your Merkle Tree result here"
       multiline
       rows={10}
       style={{

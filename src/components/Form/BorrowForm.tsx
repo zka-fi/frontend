@@ -9,14 +9,16 @@ export function BorrowForm ({ onSubmit, loading }: any) {
     <Grid container rowSpacing={4} justifyContent="center">
       <Grid container item xs={7}>
         <TextField
-          placeholder="Paste your Merkle Tree result here"
+          placeholder="Paste your Merkle Tree Proof there"
           multiline
           rows={10}
           style={{
             width: '100%'
           }}
           disabled={loading}
-          onChange={(e) => setMerkle(e.target.value)}
+          onChange={(e) => {
+            setMerkle(JSON.parse(e.target.value))
+          }}
         />
       </Grid>
       <Grid container item xs={7}>

@@ -5,9 +5,9 @@ import { useState } from "react";
 
 export default function DaiPage () {
   const [ creatingProof, setCreatingProof ] = useState(false)
-  async function proof (amount: number) {
+  async function proof (amount: number, merkle: any) {
     setCreatingProof(true)
-    const result = await generateProof(amount)
+    const result = await generateProof(amount, merkle)
       .finally(() => {
         setCreatingProof(false)
       })
@@ -24,7 +24,7 @@ export default function DaiPage () {
                 amount: number,
                 merkle: string,
               }) => {
-                proof(e.amount)
+                proof(e.amount, e.merkle)
               }}
               loading={creatingProof}
             />

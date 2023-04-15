@@ -11,7 +11,7 @@ function Page({ data }: {
 }) {
   return (
     <>
-      <ApplyForm />
+      <ApplyForm tree={data.tree} proof={data.proof}/>
     </>
   )
 }
