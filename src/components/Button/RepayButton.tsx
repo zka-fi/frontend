@@ -5,7 +5,7 @@ import { BigNumber } from "ethers"
 import { useState } from "react"
 import { useZkafiContractAddressHook } from "../../hooks/useContractAddress.hook"
 
-export function RepayButton () {
+export function RepayButton ({ amount }: any) {
   const [loading, setLoading] = useState(false)
   const zkafiAddress =  useZkafiContractAddressHook()
   async function repay () {
@@ -13,7 +13,7 @@ export function RepayButton () {
       address: zkafiAddress,
       abi: zkafiABI,
       functionName: 'noPermissionRepay',
-      args: [BigNumber.from(20)],
+      args: [BigNumber.from(amount)],
     })
     await writeContract(config)
   }

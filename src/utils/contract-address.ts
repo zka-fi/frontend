@@ -1,4 +1,4 @@
-export const zkafiAddresses = {
+export const daiAddresses = {
   "Alfajores": "0x168adaDd25Bf750e35b60fE0846E37e85DfcA2A7",
   "Gnosis Chiado": "0x168adaDd25Bf750e35b60fE0846E37e85DfcA2A7",
   "Goerli": "0x9a90C080B2b8dCF88aD35f9Bb502833233492a6a",
@@ -9,7 +9,7 @@ export const zkafiAddresses = {
   "Taiko Hackathon": "0x60c3ae31bf8E2ee2266104B3b3e7724d93bcA87e"
 }
 
-export const daiAddresses = {
+export const zkafiAddresses = {
   "Alfajores": "0xF0ddb3c7a0856248A0Dc7608298Aad5C03AED876",
   "Gnosis Chiado": "0xF0ddb3c7a0856248A0Dc7608298Aad5C03AED876",
   "Goerli": "0xfcC488090791F6944A44D74c36c2af37080dF727",

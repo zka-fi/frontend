@@ -16,7 +16,6 @@ export default function DaiPage () {
   const { data } = useFeeData()
   async function proof (amount: number, merkle: any) {
     setCreatingProof(true)
-    
     const result = await generateProof(amount, merkle)
       .then(async (zkProof) => {
         const config = await prepareWriteContract({
@@ -34,7 +33,6 @@ export default function DaiPage () {
       .finally(() => {
         setCreatingProof(false)
       })
-    console.log(result)
   }
   return (
       <Grid sx={{

@@ -1,19 +1,27 @@
 import { Button, Card, CardContent, Grid, TextField, Typography } from "@mui/material";
-import { useBalance } from "wagmi";
+import { erc20ABI, useAccount, useBalance, useContractRead } from "wagmi";
 import { useState } from "react";
 import { prepareWriteContract, writeContract} from '@wagmi/core'
 import { zkafiABI } from "../../contracts/zkafi";
 import Image from "next/image";
 import { useDaiContractAddressHook, useZkafiContractAddressHook } from "../../hooks/useContractAddress.hook";
+import { ApproveButton } from "../Button/ApproveButton";
 
 export function BondCard () {
   const daiAddress = useDaiContractAddressHook()
+  const { address } = useAccount()
   const { data: balance } = useBalance({
     address: daiAddress,
   })
   const [writing, setWriting] = useState(false)
   const [amount, setAmount] = useState(0)
   const zkafiAddress = useZkafiContractAddressHook()
+  const { data: daiToZkafiAllowance } = useContractRead({
+    address: daiAddress,
+    abi: erc20ABI,
+    functionName: 'allowance',
+    args: [address!, zkafiAddress]
+  })
   async function bond () {
     setWriting(true)
     const config = await prepareWriteContract({
@@ -74,21 +82,27 @@ export function BondCard () {
         </Grid>
       </Card>
       <Grid container item xs={12}>
-        <Button
-          variant="contained"
-          disabled={writing}
-          style={{
-            width: '100%'
-          }}
-          onClick={() => 
-            bond()
-              .finally(() => {
-                setWriting(false)
-              })
-          }
-        >
-          Bond!
-        </Button>
+        {
+          !daiToZkafiAllowance?.lte(0) ?
+          (<>
+            <Button
+                variant="contained"
+                disabled={writing}
+                style={{
+                  width: '100%'
+                }}
+              onClick={() => 
+                bond()
+                  .finally(() => {
+                    setWriting(false)
+                  })
+              }
+            >
+              Bond!
+            </Button>
+          </>)
+          : <ApproveButton isApprove={!daiToZkafiAllowance?.lte(0)}/>
+        }
       </Grid>
     </Card>
   )

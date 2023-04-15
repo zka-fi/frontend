@@ -18,7 +18,7 @@ export function CredentialCard ({
     link.setAttribute('href', `data:text/plain;charset=utf-8,${encodeURIComponent(value)}`)
     link.setAttribute(
       'download',
-      `${fileName}.cert`,
+      `${fileName}.json`,
     );
     // Append to html link element page
     document.body.appendChild(link);

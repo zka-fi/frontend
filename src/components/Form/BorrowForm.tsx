@@ -8,6 +8,7 @@ import { RepayButton } from "../Button/RepayButton";
 
 export function BorrowForm ({ onSubmit, loading }: any) {
   const [amount, setAmount] = useState(0)
+  const [repayAmount, setRepayAmount] = useState(0)
   const [merkle, setMerkle] = useState('')
   const { address } = useAccount()
   const daiAddress =  useDaiContractAddressHook()
@@ -26,19 +27,39 @@ export function BorrowForm ({ onSubmit, loading }: any) {
   })
   return (
     <Grid container rowSpacing={4} justifyContent="center">
-      <Grid container item xs={7}>
-        <TextField
-          placeholder="Paste your Merkle Tree Proof there"
-          multiline
-          rows={10}
-          style={{
-            width: '100%'
-          }}
-          disabled={loading}
-          onChange={(e) => {
-            setMerkle(JSON.parse(e.target.value))
-          }}
-        />
+      <Grid container item xs={7} columnSpacing={2} alignItems="center">
+        <Grid item>
+          <Button
+            variant="contained"
+            component="label"
+          >
+            Upload File
+            <input
+              type="file"
+              hidden
+              onChange={(e: any) => {
+                if(!window.FileReader) return; // Browser is not compatible
+
+                var reader = new FileReader();
+            
+                reader.onload = function(evt: any) {
+                  if(evt.target.readyState != 2) return;
+                  if(evt.target.error) {
+                      alert('Error while reading file');
+                      return
+                  }
+                  setMerkle(JSON.parse(evt.target.result))
+                }
+                reader.readAsText(e.target.files[0]);
+              }}
+            />
+          </Button>
+        </Grid>
+        <Grid item>
+          {
+            merkle ? 'proof uploaded' : 'proof not uploaded'
+          }
+        </Grid>
       </Grid>
       <Grid container item xs={7}>
         <TextField 
@@ -56,7 +77,7 @@ export function BorrowForm ({ onSubmit, loading }: any) {
       </Grid>
       <Grid container item xs={12} justifyContent="center" columnSpacing={3}>
         <Grid item>
-        <Button
+          <Button
               variant="contained"
               disabled={loading}
               onClick={() => {
@@ -74,14 +95,33 @@ export function BorrowForm ({ onSubmit, loading }: any) {
                 </> )
                 : 'Borrow!'
             } 
-            </Button>
+          </Button>
         </Grid>
-        <Grid item>
-          {
-            zkafiToDaiAllowance?.lte(0) ?
-            <RepayButton />
-            : <ApproveButton isApprove={zkafiToDaiAllowance?.lte(0)}/>
-          }
+
+      </Grid>
+      <Grid container item xs={7} justifyContent="center" rowSpacing={4}>
+        <Grid container item>
+          <TextField 
+            type="number"
+            label="repay amount"
+            placeholder="enter repay amount"
+            onChange={(e) => {
+              setRepayAmount(Number(e.target.value))
+            }}
+            disabled={loading}
+            style={{
+              width: '100%'
+            }}
+          />
+        </Grid>
+        <Grid container item xs={2}>
+          <Grid item>
+            {
+              !daiToZkafiAllowance?.lte(0) ?
+              <RepayButton amount={repayAmount}/>
+              : <ApproveButton isApprove={!daiToZkafiAllowance?.lte(0)}/>
+            }
+          </Grid>
         </Grid>
       </Grid>
     </Grid>
