@@ -14,6 +14,7 @@ import { Tab, Tabs } from '@mui/material';
 import { useRouter } from 'next/router';
 import { ApproveButton } from '../Button/ApproveButton';
 import { useAccount } from 'wagmi';
+import Image from "next/image";
 
 const pages = [
   {
@@ -50,24 +51,13 @@ export function ApplicationBar() {
     }}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <Typography
-            variant="h6"
-            noWrap
-            component="a"
-            href="/"
-            sx={{
-              mr: 2,
-              display: { md: 'flex' },
-              fontFamily: 'monospace',
-              fontWeight: 700,
-              letterSpacing: '.3rem',
-              color: 'inherit',
-              textDecoration: 'none',
-            }}
+          <Image 
+            src="/ZKAFI-LOGO-16-9.png"
+            alt="logo"
+            width={160}
+            height={90}
             onClick={(e) => redirect(e, '/')}
-          >
-            LOGO
-          </Typography>
+          />
 
           <Box sx={{ flexGrow: 1}}>
             <Tabs value={value} onChange={handleChange} centered>
