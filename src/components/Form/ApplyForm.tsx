@@ -1,29 +1,40 @@
 import { Box, Button, Grid, LinearProgress, Typography } from "@mui/material";
-import { useEffect, useState } from "react";
-import { MerkleTreeArea } from "../Input/MerkleTreeArea";
-import { randomSleep } from "../../utils/dark-magic";
+import { useState } from "react";
 import { CredentialCard } from "../Card/CredentialCard";
 
-export function ApplyForm ({ proof, tree}: any) {
+export function ApplyForm () {
   const [isInit, setIsInit] = useState(false)
-  const [merkleTree, setMerkleTree] = useState('')
   const [loading, setLoading] = useState(false)
-  const [merkleTreeProof, setMerkleTreeProof] = useState('')
+  const [merkleTree, setMerkleTree] = useState({
+    tree: {
+      payload: {}
+    },
+    proof: {}
+  })
+  const callAPI = () => {
+    setLoading(true)
+    setIsInit(true)
+    fetch('/api/merkle-tree')
+      .then(res => {
+        return res.json()
+      })
+      .then(res => {
+        setMerkleTree(res.data)
+      })
+      .finally(() => {
+        setLoading(false)
+      })
+  }
   return (
-    <Grid container rowSpacing={3}>
+    <Grid container rowSpacing={3} padding={3}>
       <Grid item container justifyContent="center">
         {
           isInit ? null : 
           <Button
             variant="contained"
             disabled={isInit}
-            onClick={async () => {
-              setLoading(true)
-              setIsInit(true)
-              await randomSleep(3000)
-              setMerkleTree(JSON.stringify(tree, null, 2))
-              setMerkleTreeProof(JSON.stringify(proof, null, 2))
-              setLoading(false)
+            onClick={() => {
+              callAPI()
             }}
           >
             <Typography component="h3">
@@ -45,9 +56,9 @@ export function ApplyForm ({ proof, tree}: any) {
                   <Grid item xs={12}>
                     <CredentialCard 
                       title={'Merkle Tree'}
-                      tree={merkleTree}
-                      proof={merkleTreeProof}
-                      payload={tree.payload}
+                      tree={merkleTree.tree}
+                      proof={merkleTree.proof}
+                      payload={merkleTree.tree.payload}
                     />
                   </Grid>
                 </Grid>

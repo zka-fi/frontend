@@ -31,10 +31,13 @@ export function CredentialCard ({
   return (
     <Card>
       <CardContent>
-        <Typography>
-          <h2>
+        <Typography
+          sx={{
+            fontSize: '18px',
+            fontWeight: 'bold',
+          }}
+        >
             Credential Info
-          </h2>
         </Typography>
         <Box>
           <ContentText>address : {payload?.address}</ContentText>

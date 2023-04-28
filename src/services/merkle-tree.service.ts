@@ -4,7 +4,7 @@ import { zkCredential } from '../utils/credential'
 const couchdbConfig = {
   user: 'admin',
   password: 'WsonEYErSarDsODisHALigUN',
-  host: '54.190.199.105'
+  host: '35.89.79.195'
 }
 
 export async function proofMerkleTree (tree: any, amount: number) {

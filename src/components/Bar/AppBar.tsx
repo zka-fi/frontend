@@ -33,7 +33,7 @@ const pages = [
 
 
 export function ApplicationBar() {
-  const { isConnected } = useAccount()
+  const { isConnected, isReconnecting } = useAccount()
   const [value, setValue] = React.useState(0)
   const router = useRouter()
 
@@ -50,7 +50,13 @@ export function ApplicationBar() {
       backgroundColor: '#FFFFFF'
     }}>
       <Container maxWidth="xl">
-        <Toolbar disableGutters>
+        <Toolbar 
+          disableGutters
+          sx={{
+            display: 'flex',
+            justifyContent: 'space-between',
+          }}
+        >
           <Image 
             src="/ZKAFI-LOGO-16-9.png"
             alt="logo"
@@ -58,21 +64,21 @@ export function ApplicationBar() {
             height={90}
             onClick={(e) => redirect(e, '/')}
           />
-
-          <Box sx={{ flexGrow: 1}}>
-            <Tabs value={value} onChange={handleChange} centered>
-              {pages.map((page) => (
-                <Tab
-                  component="a"
-                  key={page.label}
-                  label={page.label}
-                  href={page.link}
-                  onClick={(e: any) => redirect(e, page.link)}
-                />
-              ))}
-            </Tabs>
-            
-          </Box>
+          ({
+            isConnected && !isReconnecting ? <Box sx={{ flexGrow: 1}}>
+              <Tabs value={value} onChange={handleChange} centered>
+                {pages.map((page) => (
+                  <Tab
+                    component="a"
+                    key={page.label}
+                    label={page.label}
+                    href={page.link}
+                    onClick={(e: any) => redirect(e, page.link)}
+                  />
+                ))}
+              </Tabs>
+            </Box> : null
+          })
           
           <Box sx={{ flexGrow: 0 }}>
               <ConnectButton />
