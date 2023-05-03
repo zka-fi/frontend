@@ -26,7 +26,7 @@ const pages = [
     link: '/merkle-tree'
   },
   {
-    label: 'lender',
+    label: 'Bond',
     link: '/lender'
   },
 ]
@@ -68,7 +68,10 @@ export function ApplicationBar() {
             isConnected && !isReconnecting ? <Box sx={{ flexGrow: 1}}>
               <Tabs value={value} onChange={handleChange} centered>
                 {pages.map((page) => (
-                  <Tab
+                  <Tab 
+                    sx={{
+                      textTransform: 'none'
+                    }}
                     component="a"
                     key={page.label}
                     label={page.label}

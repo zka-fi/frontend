@@ -6,16 +6,17 @@ import { zkafiABI } from "../../contracts/zkafi";
 import Image from "next/image";
 import { useDaiContractAddressHook, useZkafiContractAddressHook } from "../../hooks/useContractAddress.hook";
 import { ApproveButton } from "../Button/ApproveButton";
+import { BigNumber } from "ethers";
+import { formatted, invokeFormat } from "../../utils/ether-big-number";
+import { CurrentBalanceDisplay } from "../Display/CurrentBalanceDisplay";
 
 export function BondCard () {
   const daiAddress = useDaiContractAddressHook()
   const { address } = useAccount()
-  const { data: balance } = useBalance({
-    address: daiAddress,
-  })
+  const zkafiAddress = useZkafiContractAddressHook()
   const [writing, setWriting] = useState(false)
   const [amount, setAmount] = useState(0)
-  const zkafiAddress = useZkafiContractAddressHook()
+  
   const { data: daiToZkafiAllowance } = useContractRead({
     address: daiAddress,
     abi: erc20ABI,
@@ -28,7 +29,7 @@ export function BondCard () {
       address: zkafiAddress,
       abi: zkafiABI,
       functionName: 'bond',
-      args: [amount],
+      args: [invokeFormat(amount.toString()).toString()],
     })
     const data = await writeContract(config)
     return data
@@ -57,11 +58,7 @@ export function BondCard () {
               </Typography>
             </Grid>
             <Grid item>
-              <Typography sx={{
-                fontSize: '16px'
-              }}>
-                current balance: {balance?.value.toNumber()} 
-              </Typography>
+              <CurrentBalanceDisplay />
             </Grid>
           </Grid>
           <Grid item container xs={10}>

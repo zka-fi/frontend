@@ -5,29 +5,20 @@ import { ApproveButton } from "../Button/ApproveButton";
 import { erc20ABI, useAccount, useContractRead } from "wagmi";
 import { useDaiContractAddressHook, useZkafiContractAddressHook } from "../../hooks/useContractAddress.hook";
 import { RepayButton } from "../Button/RepayButton";
+import { zkafiABI } from "../../contracts/zkafi";
+import { BigNumber } from "ethers";
+import { formatted } from "../../utils/ether-big-number";
+import { TotalPoolDisplay } from "../Display/TotalPoolDisplay";
 
 export function BorrowForm ({ onSubmit, loading }: any) {
   const [amount, setAmount] = useState(0)
-  const [repayAmount, setRepayAmount] = useState(0)
   const [merkle, setMerkle] = useState('')
-  const { address } = useAccount()
-  const daiAddress =  useDaiContractAddressHook()
-  const zkafiAddress =  useZkafiContractAddressHook()
-  const { data: daiToZkafiAllowance } = useContractRead({
-    address: daiAddress,
-    abi: erc20ABI,
-    functionName: 'allowance',
-    args: [address!, zkafiAddress]
-  })
-  const { data: zkafiToDaiAllowance } = useContractRead({
-    address: zkafiAddress,
-    abi: erc20ABI,
-    functionName: 'allowance',
-    args: [address!, daiAddress]
-  })
   return (
     <Grid container rowSpacing={4} justifyContent="center">
-      <Grid container item xs={7} columnSpacing={2} alignItems="center">
+      <Grid container item>
+        <TotalPoolDisplay />
+      </Grid>
+      <Grid container item columnSpacing={2} alignItems="center">
         <Grid item>
           <Button
             variant="contained"
@@ -61,7 +52,7 @@ export function BorrowForm ({ onSubmit, loading }: any) {
           }
         </Grid>
       </Grid>
-      <Grid container item xs={7}>
+      <Grid container item>
         <TextField 
           type="number"
           label="borrow amount"
@@ -75,19 +66,19 @@ export function BorrowForm ({ onSubmit, loading }: any) {
           }}
         />
       </Grid>
-      <Grid container item xs={12} justifyContent="center" columnSpacing={3}>
+      <Grid container item xs={12} columnSpacing={3}>
         <Grid item>
           <Button
-              variant="contained"
-              disabled={loading}
-              onClick={() => {
-                onSubmit({
-                  amount,
-                  merkle,
-                })
-              }}
-            >
-              {
+            variant="contained"
+            disabled={loading}
+            onClick={() => {
+              onSubmit({
+                amount,
+                merkle,
+              })
+            }}
+          >
+            {
               loading ? (
                 <>
                   Borrowing...
@@ -96,32 +87,6 @@ export function BorrowForm ({ onSubmit, loading }: any) {
                 : 'Borrow!'
             } 
           </Button>
-        </Grid>
-
-      </Grid>
-      <Grid container item xs={7} justifyContent="center" rowSpacing={4}>
-        <Grid container item>
-          <TextField 
-            type="number"
-            label="repay amount"
-            placeholder="enter repay amount"
-            onChange={(e) => {
-              setRepayAmount(Number(e.target.value))
-            }}
-            disabled={loading}
-            style={{
-              width: '100%'
-            }}
-          />
-        </Grid>
-        <Grid container item xs={2}>
-          <Grid item>
-            {
-              !daiToZkafiAllowance?.lte(0) ?
-              <RepayButton amount={repayAmount}/>
-              : <ApproveButton isApprove={!daiToZkafiAllowance?.lte(0)}/>
-            }
-          </Grid>
         </Grid>
       </Grid>
     </Grid>

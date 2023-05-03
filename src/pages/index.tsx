@@ -9,7 +9,7 @@ function Page() {
   const { isConnected } = useAccount()
   return (
     <>
-      {isConnected && <Account />}
+      {isConnected ? null : 'Please connect your wallet first!'}
     </>
   )
 }

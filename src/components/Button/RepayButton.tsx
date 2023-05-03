@@ -4,6 +4,7 @@ import { zkafiABI } from "../../contracts/zkafi"
 import { BigNumber } from "ethers"
 import { useState } from "react"
 import { useZkafiContractAddressHook } from "../../hooks/useContractAddress.hook"
+import { invokeFormat } from "../../utils/ether-big-number"
 
 export function RepayButton ({ amount }: any) {
   const [loading, setLoading] = useState(false)
@@ -13,7 +14,7 @@ export function RepayButton ({ amount }: any) {
       address: zkafiAddress,
       abi: zkafiABI,
       functionName: 'noPermissionRepay',
-      args: [BigNumber.from(amount)],
+      args: [invokeFormat(amount.toString())],
     })
     await writeContract(config)
   }

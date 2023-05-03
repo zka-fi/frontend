@@ -21,7 +21,7 @@ export async function exportSolidity({ proof, publicSignals }: any) {
 }
 
 export async function generateProof(
-  amount: number,
+  amount: string,
   merkle: any,
   filePathWASM: string = '/base.wasm',
   filePathZKEY: string = '/base.zkey',

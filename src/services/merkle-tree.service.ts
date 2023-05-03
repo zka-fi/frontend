@@ -1,5 +1,6 @@
 import { createSMT, proofByIndex} from 'zkafi-merkle-tree'
 import { zkCredential } from '../utils/credential'
+import { invokeFormat } from '../utils/ether-big-number'
 
 const couchdbConfig = {
   user: 'admin',
@@ -11,7 +12,7 @@ export async function proofMerkleTree (tree: any, amount: number) {
   const [root] = tree.layers[tree.layers.length - 1]
   const proof = await proofByIndex(
     4,
-    amount,
+    invokeFormat(amount.toString()).toString(),
     root,
     couchdbConfig
   )

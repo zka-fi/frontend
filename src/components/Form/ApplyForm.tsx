@@ -56,8 +56,8 @@ export function ApplyForm () {
                   <Grid item xs={12}>
                     <CredentialCard 
                       title={'Merkle Tree'}
-                      tree={merkleTree.tree}
-                      proof={merkleTree.proof}
+                      tree={JSON.stringify(merkleTree.tree)}
+                      proof={JSON.stringify(merkleTree.proof)}
                       payload={merkleTree.tree.payload}
                     />
                   </Grid>
