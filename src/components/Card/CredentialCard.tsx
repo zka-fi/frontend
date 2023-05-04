@@ -31,10 +31,13 @@ export function CredentialCard ({
   return (
     <Card>
       <CardContent>
-        <Typography>
-          <h2>
+        <Typography
+          sx={{
+            fontSize: '18px',
+            fontWeight: 'bold',
+          }}
+        >
             Credential Info
-          </h2>
         </Typography>
         <Box>
           <ContentText>address : {payload?.address}</ContentText>
@@ -47,7 +50,6 @@ export function CredentialCard ({
           <Grid item>
             <Button
               variant="contained"
-              color="secondary"
               onClick={() => downloadCert(tree, 'tree')}
             >
               Download Tree
@@ -56,7 +58,7 @@ export function CredentialCard ({
           <Grid item>
             <Button
               variant="contained"
-              color="secondary"
+
               onClick={() => downloadCert(proof, 'proof')}
             >
               Download Proof

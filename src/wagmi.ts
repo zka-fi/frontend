@@ -1,9 +1,7 @@
 import { getDefaultClient } from 'connectkit'
-import { Chain, configureChains, createClient } from 'wagmi'
+import { Chain, configureChains, createClient, sepolia } from 'wagmi'
 import { publicProvider } from 'wagmi/providers/public'
-
 import { goerli, polygonMumbai, celoAlfajores, gnosisChiado } from 'wagmi/chains'
-
 
 export const makeChain = (name: string, rpc: string, id: number) => {
   return {
@@ -26,18 +24,15 @@ export const makeChain = (name: string, rpc: string, id: number) => {
     testnet: true,
   }
 }
-// const a = makeChain('Chiado Testnet', 'https://rpc.chiado.gnosis.gateway.fm', 10200)
 const defaultChains: Chain[] = [
-  polygonMumbai,
   goerli,
+  sepolia,
+  polygonMumbai,
   gnosisChiado,
   celoAlfajores,
   makeChain('Mantle Testnet', 'https://rpc.testnet.mantle.xyz', 5001),
   makeChain('Scroll Alpha', 'https://alpha-rpc.scroll.io/l2', 534353),
-  makeChain('Taiko Hackathon', 'https://l2rpc.hackathon.taiko.xyz', 167002),
 ];
-
-
 
 const { chains, provider, webSocketProvider } = configureChains(
   // TODO: pull flag from .env and reconfigure this config object
@@ -46,7 +41,6 @@ const { chains, provider, webSocketProvider } = configureChains(
     publicProvider(),
   ],
 )
-
 
 export const client = createClient(
   getDefaultClient({

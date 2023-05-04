@@ -2,3 +2,16 @@ body {
   background-color: #fce5cdff;
   margin: 0;
 }
+
+.spin--icon {
+  animation: spinspin 0.8s infinite linear;
+}
+
+@keyframes spinspin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
