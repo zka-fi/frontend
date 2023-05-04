@@ -6,14 +6,15 @@ import { useContractRead } from "wagmi";
 import { DaiABI } from "../../contracts/dai";
 
 
-export function TotalPoolDisplay () {
-  const daiAddress = useDaiContractAddressHook()
+export function ZDAIPoolDisplay ({
+  title = 'ZDAI Pool'
+}: any) {
+  // const daiAddress = useDaiContractAddressHook()
   const zkafiAddress = useZkafiContractAddressHook()
   const { data: totalPool } = useContractRead({
-    address: daiAddress,
-    abi: DaiABI,
-    functionName: 'balanceOf',
-    args: [zkafiAddress]
+    address: zkafiAddress,
+    abi: zkafiABI,
+    functionName: 'totalPool',
   })
   return (
     <Typography
@@ -22,7 +23,7 @@ export function TotalPoolDisplay () {
         fontWeight: 'bold'
       }}
     >
-      Total pool: {totalPool ? formatted(totalPool).toString() : null} DAI
+      {title}: {totalPool ? formatted(totalPool).toString() : null} ZDAI
     </Typography>
   )
 }

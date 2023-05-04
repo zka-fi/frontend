@@ -4,15 +4,12 @@ import { useAccount, useContractRead, useToken } from "wagmi";
 import { useDaiContractAddressHook } from "../../hooks/useContractAddress.hook";
 import { DaiABI } from "../../contracts/dai";
 
-export function CurrentBalanceDisplay ({ size = '18px' }: any) {
-  const { address } = useAccount()
+export function CurrentBalanceDisplay ({ 
+  size = '18px',
+  balance,
+  isTokenDisplayed = true
+}: any) {
   const daiAddress = useDaiContractAddressHook()
-  const { data: balance } = useContractRead({
-    address: daiAddress,
-    abi: DaiABI,
-    functionName: 'balanceOf',
-    args: [address]
-  })
   const { data: token } = useToken({
     address: daiAddress,
   })
@@ -23,7 +20,7 @@ export function CurrentBalanceDisplay ({ size = '18px' }: any) {
         fontSize: size,
       }}
     >
-      Balance: {balance ? formatted(balance).toString() : null} {token?.name}
+      Balance: {balance} {isTokenDisplayed ? token?.name : null}
     </Typography>
   )
 }

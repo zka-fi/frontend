@@ -13,6 +13,9 @@ import { AppBar, Box, Container } from '@mui/material'
 import { ApplicationBar } from '../components/Bar/AppBar'
 const theme = createTheme({
   palette: {
+    primary: {
+      main: '#6C221C',
+    },
     secondary: {
       main: grey[200],
     },

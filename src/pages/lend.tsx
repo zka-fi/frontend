@@ -1,62 +1,15 @@
 import {
-  Button,
   Card,
-  CircularProgress,
   Grid,
-  Typography,
   alpha,
 } from "@mui/material";
-import { generateProof } from "../services/proof.service";
 import { BorrowForm } from "../components/Form/BorrowForm";
-import { useState } from "react";
-import { writeContract, prepareWriteContract } from "@wagmi/core";
-import {
-  useAccount,
-  useBalance,
-  useContractRead,
-  useFeeData,
-  useToken,
-} from "wagmi";
-import { zkafiABI } from "../contracts/zkafi";
-import { BigNumber } from "ethers";
-import { RepayButton } from "../components/Button/RepayButton";
-import { ApproveButton } from "../components/Button/ApproveButton";
-import {
-  useDaiContractAddressHook,
-  useZkafiContractAddressHook,
-} from "../hooks/useContractAddress.hook";
 import { RepayForm } from "../components/Form/RepayForm";
 import RepeatIcon from "@mui/icons-material/Repeat";
-import { formatted, invokeFormat } from "../utils/ether-big-number";
-import { DaiABI } from "../contracts/dai";
-import { CurrentBalanceDisplay } from "../components/Display/CurrentBalanceDisplay";
+import { useState } from "react";
 
 export default function DaiPage() {
-  const [creatingProof, setCreatingProof] = useState(false);
-  const zkafiAddress = useZkafiContractAddressHook();
-  async function proof(amount: number, merkle: any) {
-    setCreatingProof(true);
-    const result = await generateProof(
-      invokeFormat(amount.toString()).toString(),
-      merkle
-    )
-      .then(async (zkProof) => {
-        const config = await prepareWriteContract({
-          address: zkafiAddress,
-          abi: zkafiABI,
-          functionName: "noPermissionBorrow",
-          args: [zkProof],
-        });
-        const data = await writeContract(config);
-        return data;
-      })
-      .catch((e) => {
-        console.log(e);
-      })
-      .finally(() => {
-        setCreatingProof(false);
-      });
-  }
+  const [loading, setLoading] = useState(false)
   return (
     <Grid
       sx={{
@@ -75,16 +28,15 @@ export default function DaiPage() {
             }}
             style={{ borderRadius: "20px" }}
           >
-            <BorrowForm
-              onSubmit={(e: { amount: number; merkle: string }) => {
-                proof(e.amount, e.merkle);
-              }}
-              loading={creatingProof}
+            <BorrowForm 
+              loading={loading} 
+              onStart={() => setLoading(true)}
+              onComplete={() => setLoading(false)}
             />
           </Card>
         </Grid>
         <Grid container item xs={1} alignItems="center" justifyContent="center">
-          <RepeatIcon />
+          <RepeatIcon className={loading ? 'spin--icon' : ''}/>
         </Grid>
         <Grid item xs={5}>
           <Card
@@ -95,7 +47,11 @@ export default function DaiPage() {
             }}
             style={{ borderRadius: "20px" }}
           >
-            <RepayForm loading={creatingProof} />
+            <RepayForm 
+              loading={loading} 
+              onStart={() => setLoading(true)}
+              onComplete={() => setLoading(false)}
+            />
           </Card>
         </Grid>
       </Grid>

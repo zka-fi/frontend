@@ -1,23 +1,45 @@
-import { Button, CircularProgress, Grid, TextField, alpha } from "@mui/material";
+import { Button, Grid, Skeleton, TextField, alpha } from "@mui/material";
+import { prepareWriteContract, writeContract, waitForTransaction} from "@wagmi/core"
 import { useState } from "react";
-import { LoadingContent } from "../Loading/LoadingContent";
-import { ApproveButton } from "../Button/ApproveButton";
-import { erc20ABI, useAccount, useContractRead } from "wagmi";
-import { useDaiContractAddressHook, useZkafiContractAddressHook } from "../../hooks/useContractAddress.hook";
-import { RepayButton } from "../Button/RepayButton";
+import { DAIPoolDisplay } from "../Display/DAIPoolDisplay";
+import { useZkafiContractAddressHook } from "../../hooks/useContractAddress.hook";
+import { generateProof } from "../../services/proof.service";
+import { invokeFormat } from "../../utils/ether-big-number";
 import { zkafiABI } from "../../contracts/zkafi";
-import { BigNumber } from "ethers";
-import { formatted } from "../../utils/ether-big-number";
-import { TotalPoolDisplay } from "../Display/TotalPoolDisplay";
-import { purple } from '@mui/material/colors';
 
-export function BorrowForm ({ onSubmit, loading }: any) {
+export function BorrowForm ({
+  loading,
+  onStart,
+  onComplete,
+}: any) {
   const [amount, setAmount] = useState(0)
   const [merkle, setMerkle] = useState('')
+  const [transactionLoading, setTransactionLoading] = useState(false);
+  const zkafiAddress = useZkafiContractAddressHook();
+  async function proof(amount: number, merkle: any) {
+    setTransactionLoading(true);
+    const zkProof = await generateProof(
+      invokeFormat(amount.toString()).toString(),
+      merkle
+    )
+    const config = await prepareWriteContract({
+      address: zkafiAddress,
+      abi: zkafiABI,
+      functionName: "noPermissionBorrow",
+      args: [zkProof],
+    });
+    const {hash} = await writeContract(config)
+    await waitForTransaction({hash}) 
+  }
   return (
     <Grid container rowSpacing={4} justifyContent="center">
       <Grid container item>
-        <TotalPoolDisplay />
+        {
+          loading || transactionLoading ?
+            <Skeleton variant="rectangular" width={260} height={10} />
+            : <DAIPoolDisplay />
+        }
+        
       </Grid>
       <Grid container item columnSpacing={2} alignItems="center">
         <Grid item>
@@ -81,24 +103,24 @@ export function BorrowForm ({ onSubmit, loading }: any) {
             variant="contained"
             disabled={loading}
             style={{
-              backgroundColor: alpha("#6C221C", 0.8),
               textTransform: 'none',
             }}
             sx={{
               width: '120px',
             }}
             onClick={() => {
-              onSubmit({
-                amount,
-                merkle,
-              })
+              onStart()
+              proof(amount, merkle)
+                .finally(() => {
+                  onComplete()
+                  setTransactionLoading(false)
+                })
             }}
           >
             {
               loading ? (
                 <>
                   Borrowing...
-                  <CircularProgress size={20} sx={{ backgroundColor: alpha("#6C221C", 0.8)}}/>
                 </> )
                 : 'Borrow'
             } 

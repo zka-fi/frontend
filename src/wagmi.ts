@@ -1,5 +1,5 @@
 import { getDefaultClient } from 'connectkit'
-import { Chain, configureChains, createClient } from 'wagmi'
+import { Chain, configureChains, createClient, sepolia } from 'wagmi'
 import { publicProvider } from 'wagmi/providers/public'
 import { goerli, polygonMumbai, celoAlfajores, gnosisChiado } from 'wagmi/chains'
 
@@ -26,6 +26,7 @@ export const makeChain = (name: string, rpc: string, id: number) => {
 }
 const defaultChains: Chain[] = [
   goerli,
+  sepolia,
   polygonMumbai,
   gnosisChiado,
   celoAlfajores,

@@ -50,7 +50,6 @@ export function CredentialCard ({
           <Grid item>
             <Button
               variant="contained"
-              color="secondary"
               onClick={() => downloadCert(tree, 'tree')}
             >
               Download Tree
@@ -59,7 +58,7 @@ export function CredentialCard ({
           <Grid item>
             <Button
               variant="contained"
-              color="secondary"
+
               onClick={() => downloadCert(proof, 'proof')}
             >
               Download Proof

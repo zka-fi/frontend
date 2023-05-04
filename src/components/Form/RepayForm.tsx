@@ -1,15 +1,25 @@
-import { Button, FormControl, Grid, Input, OutlinedInput, TextField, alpha } from "@mui/material"
+import { Box, Button, FormControl, Grid, Input, LinearProgress, OutlinedInput, Skeleton, TextField, alpha } from "@mui/material"
 import { RepayButton } from "../Button/RepayButton"
 import { ApproveButton } from "../Button/ApproveButton"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { erc20ABI, useAccount, useContractRead } from "wagmi"
+import { readContract } from "@wagmi/core"
 import { useDaiContractAddressHook, useZkafiContractAddressHook } from "../../hooks/useContractAddress.hook"
 import { DebtDisplay } from "../Display/DebtDisplay"
 import { CurrentBalanceDisplay } from "../Display/CurrentBalanceDisplay"
+import { useCurrentBalance } from "../../hooks/current-balance.hook"
+import { BigNumber } from "ethers"
 
-export function RepayForm ({loading}:any) {
-  const [repayAmount, setRepayAmount] = useState(0)
+export function RepayForm ({
+  loading,
+  onStart,
+  onComplete
+}: any) {
+  const [amount, setAmount] = useState<number>()
+  const [debt, setDebt] = useState<number>()
+  const [transactionLoading, setTransactionLoading] = useState(false)
   const { address } = useAccount()
+  const balance = useCurrentBalance()
   const daiAddress =  useDaiContractAddressHook()
   const zkafiAddress =  useZkafiContractAddressHook()
   const { data: daiToZkafiAllowance } = useContractRead({
@@ -21,20 +31,28 @@ export function RepayForm ({loading}:any) {
   return (
     <Grid container justifyContent="center" rowSpacing={4}>
       <Grid container item>
-        <CurrentBalanceDisplay />
+        <CurrentBalanceDisplay balance={balance} />
       </Grid>
       <Grid container item>
-        <DebtDisplay/>
+        {
+          transactionLoading || loading ? 
+          <Skeleton variant="rectangular" width={260} height={10} />
+          : <DebtDisplay 
+              onChange={(debt: any) => {
+                setDebt(debt)
+              }}
+            />
+        }
       </Grid>
       <Grid container item xs={12}>
         <FormControl fullWidth={true} variant="outlined">
           <Grid container item alignItems={'center'}>
             <Grid item xs={9}>
               <OutlinedInput 
-                type="number"
+                value={amount}
                 placeholder="enter repay amount"
                 onChange={(e) => {
-                  setRepayAmount(Number(e.target.value))
+                  setAmount(Number(e.target.value))
                 }}
                 disabled={loading}
                 style={{
@@ -55,6 +73,9 @@ export function RepayForm ({loading}:any) {
                   borderColor: alpha("#6C221C", 0.8),
                   textTransform: 'none',
                 }}
+                onClick={() => {
+                  setAmount(debt)
+                }}
               >
                 Max
               </Button>
@@ -67,7 +88,17 @@ export function RepayForm ({loading}:any) {
           !daiToZkafiAllowance?.lte(0) ?
           (
             <>
-              <RepayButton amount={repayAmount}/>
+              <RepayButton 
+                amount={amount}
+                onStart={() => {
+                  setTransactionLoading(true)
+                  onStart()
+                }}
+                onComplete={() => {
+                  setTransactionLoading(false)
+                  onComplete()
+                }}
+              />
             </>
           )
           : <ApproveButton isApprove={!daiToZkafiAllowance?.lte(0)}/>

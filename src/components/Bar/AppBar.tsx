@@ -15,6 +15,9 @@ import { useRouter } from 'next/router';
 import { ApproveButton } from '../Button/ApproveButton';
 import { useAccount } from 'wagmi';
 import Image from "next/image";
+import { useDaiContractAddressHook } from '../../hooks/useContractAddress.hook';
+import { DaiABI } from '../../contracts/dai';
+// import { MintDialog } from '../Dialog/MintDialog';
 
 const pages = [
   {
@@ -34,60 +37,76 @@ const pages = [
 
 export function ApplicationBar() {
   const { isConnected, isReconnecting } = useAccount()
-  const [value, setValue] = React.useState(0)
   const router = useRouter()
-
+  const [open, setOpen] = React.useState(false)
+  const index = pages.findIndex(e => e.link === router.pathname)
+  const [value, setValue] = React.useState(index)
+  
+  React.useEffect(() => {
+    setValue(pages.findIndex(e => e.link === router.pathname))
+  }, [router.pathname])
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   }
-
   function redirect (e:  React.SyntheticEvent, link: string) {
     e.preventDefault()
     router.push(link)
   }
+
   return (
-    <AppBar position="static" elevation={0} style={{
-      backgroundColor: '#f1c27d'
-    }}>
-      <Container maxWidth="xl">
-        <Toolbar 
-          disableGutters
-          sx={{
-            display: 'flex',
-            justifyContent: 'space-between',
-          }}
-        >
-          <Image 
-            src="/ZKAFI-LOGO-16-9.png"
-            alt="logo"
-            width={160}
-            height={90}
-            onClick={(e) => redirect(e, '/')}
-          />
-          {
-            isConnected && !isReconnecting ? <Box sx={{ flexGrow: 1}}>
-              <Tabs value={value} onChange={handleChange} centered>
-                {pages.map((page) => (
-                  <Tab 
-                    sx={{
-                      textTransform: 'none'
-                    }}
-                    component="a"
-                    key={page.label}
-                    label={page.label}
-                    href={page.link}
-                    onClick={(e: any) => redirect(e, page.link)}
-                  />
-                ))}
-              </Tabs>
-            </Box> : null
-          }
-          
-          <Box sx={{ flexGrow: 0 }}>
-              <ConnectButton />
-            </Box>
-        </Toolbar>
-      </Container>
-    </AppBar>
+    <>
+      <AppBar position="static" elevation={0} style={{
+        backgroundColor: '#f1c27d'
+      }}>
+        <Container maxWidth="xl">
+          <Toolbar 
+            disableGutters
+            sx={{
+              display: 'flex',
+              justifyContent: 'space-between',
+            }}
+          >
+            <Image 
+              src="/ZKAFI-LOGO-16-9.png"
+              alt="logo"
+              width={160}
+              height={90}
+              onClick={() => {
+                setOpen(true)
+              }}
+            />
+            {
+              isConnected && !isReconnecting ? <Box sx={{ flexGrow: 1}}>
+                <Tabs 
+                  value={value} 
+                  onChange={handleChange} 
+                  centered
+                >
+                  {pages.map((page) => (
+                    <Tab 
+                      sx={{
+                        textTransform: 'none'
+                      }}
+                      component="a"
+                      key={page.label}
+                      label={page.label}
+                      href={page.link}
+                      onClick={(e: any) => redirect(e, page.link)}
+                    />
+                  ))}
+                </Tabs>
+              </Box> : null
+            }
+            
+            <Box sx={{ flexGrow: 0 }}>
+                <ConnectButton />
+              </Box>
+          </Toolbar>
+        </Container>
+      </AppBar>
+      {/* <MintDialog open={open} onClose={() => {
+        setOpen(false)
+      }}/> */}
+    </>
   );
 }

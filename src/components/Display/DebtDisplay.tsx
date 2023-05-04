@@ -4,7 +4,9 @@ import { zkafiABI } from "../../contracts/zkafi"
 import { formatted } from "../../utils/ether-big-number"
 import { Typography } from "@mui/material"
 
-export function DebtDisplay () {
+export function DebtDisplay ({
+  onChange
+}: any) {
   const { address } = useAccount()
   const zkafiAddress = useZkafiContractAddressHook()
   const { data: debt } = useContractRead({
@@ -13,6 +15,8 @@ export function DebtDisplay () {
     functionName: 'calculateRepayAmount',
     args: [address]
   })
+  const value = debt !== undefined ? formatted(debt).toString() : null
+  onChange(value)
   return (
     <Typography
       sx={{
@@ -20,7 +24,7 @@ export function DebtDisplay () {
         fontWeight: 'bold'
       }}
     >
-      current debt: {debt !== undefined ? formatted(debt).toString() : null}
+      current debt: {value}
     </Typography>
   )
 }
