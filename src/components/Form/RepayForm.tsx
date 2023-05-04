@@ -1,4 +1,4 @@
-import { Button, FormControl, Grid, Input, OutlinedInput, TextField } from "@mui/material"
+import { Button, FormControl, Grid, Input, OutlinedInput, TextField, alpha } from "@mui/material"
 import { RepayButton } from "../Button/RepayButton"
 import { ApproveButton } from "../Button/ApproveButton"
 import { useState } from "react"
@@ -28,8 +28,8 @@ export function RepayForm ({loading}:any) {
       </Grid>
       <Grid container item xs={12}>
         <FormControl fullWidth={true} variant="outlined">
-          <Grid container item >
-            <Grid item xs={10}>
+          <Grid container item alignItems={'center'}>
+            <Grid item xs={9}>
               <OutlinedInput 
                 type="number"
                 placeholder="enter repay amount"
@@ -42,15 +42,22 @@ export function RepayForm ({loading}:any) {
                 }}
               />
             </Grid>
+            <Grid item xs={1}></Grid>
             <Grid item xs={2}>
               <Button 
-                variant="contained"
+                variant="outlined"
                 size="small"
                 sx={{
-                  borderRadius: '10px',
-                  
+                  borderRadius: '20px',
                 }}
-              >Max</Button>
+                style={{
+                  color: alpha("#6C221C", 0.8),
+                  borderColor: alpha("#6C221C", 0.8),
+                  textTransform: 'none',
+                }}
+              >
+                Max
+              </Button>
             </Grid>
           </Grid>
         </FormControl>

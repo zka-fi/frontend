@@ -22,7 +22,7 @@ export function TotalPoolDisplay () {
         fontWeight: 'bold'
       }}
     >
-      total pool: {totalPool ? formatted(totalPool).toString() : null} Dai
+      Total pool: {totalPool ? formatted(totalPool).toString() : null} DAI
     </Typography>
   )
 }

@@ -19,7 +19,7 @@ export function CurrentBalanceDisplay ({ size = '18px' }: any) {
   return (
     <Typography
       sx={{
-        fontWeight: 'bold',
+        fontWeight: 'normal',
         fontSize: size,
       }}
     >

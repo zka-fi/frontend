@@ -1,4 +1,4 @@
-import { Button, CircularProgress, Grid, TextField } from "@mui/material";
+import { Button, CircularProgress, Grid, TextField, alpha } from "@mui/material";
 import { useState } from "react";
 import { LoadingContent } from "../Loading/LoadingContent";
 import { ApproveButton } from "../Button/ApproveButton";
@@ -9,6 +9,7 @@ import { zkafiABI } from "../../contracts/zkafi";
 import { BigNumber } from "ethers";
 import { formatted } from "../../utils/ether-big-number";
 import { TotalPoolDisplay } from "../Display/TotalPoolDisplay";
+import { purple } from '@mui/material/colors';
 
 export function BorrowForm ({ onSubmit, loading }: any) {
   const [amount, setAmount] = useState(0)
@@ -21,8 +22,16 @@ export function BorrowForm ({ onSubmit, loading }: any) {
       <Grid container item columnSpacing={2} alignItems="center">
         <Grid item>
           <Button
-            variant="contained"
+            variant="outlined"
             component="label"
+            style={{
+              color: alpha("#6C221C", 0.8),
+              borderColor: alpha("#6C221C", 0.8),
+              textTransform: 'none',
+            }}
+            sx={{
+              width: '120px',
+            }}
           >
             Upload File
             <input
@@ -71,6 +80,13 @@ export function BorrowForm ({ onSubmit, loading }: any) {
           <Button
             variant="contained"
             disabled={loading}
+            style={{
+              backgroundColor: alpha("#6C221C", 0.8),
+              textTransform: 'none',
+            }}
+            sx={{
+              width: '120px',
+            }}
             onClick={() => {
               onSubmit({
                 amount,
@@ -82,9 +98,9 @@ export function BorrowForm ({ onSubmit, loading }: any) {
               loading ? (
                 <>
                   Borrowing...
-                  <CircularProgress size={20} color="secondary"/>
+                  <CircularProgress size={20} sx={{ backgroundColor: alpha("#6C221C", 0.8)}}/>
                 </> )
-                : 'Borrow!'
+                : 'Borrow'
             } 
           </Button>
         </Grid>

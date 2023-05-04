@@ -6,7 +6,6 @@ export const daiAddresses = {
   "Mantle Testnet": "0x168adaDd25Bf750e35b60fE0846E37e85DfcA2A7",
   "Polygon Mumbai": "0x168adaDd25Bf750e35b60fE0846E37e85DfcA2A7",
   "Scroll Alpha": "0x168adaDd25Bf750e35b60fE0846E37e85DfcA2A7",
-  "Taiko Hackathon": "0x60c3ae31bf8E2ee2266104B3b3e7724d93bcA87e"
 }
 
 export const zkafiAddresses = {
@@ -17,5 +16,4 @@ export const zkafiAddresses = {
   "Mantle Testnet": "0xF0ddb3c7a0856248A0Dc7608298Aad5C03AED876",
   "Polygon Mumbai": "0xF0ddb3c7a0856248A0Dc7608298Aad5C03AED876",
   "Scroll Alpha": "0xF0ddb3c7a0856248A0Dc7608298Aad5C03AED876",
-  "Taiko Hackathon": "0x6C25477Aa192Bef57C7BA4Ac3dcBAB44Cd5BaA58"
 }

@@ -26,13 +26,23 @@ export function ApplyForm () {
       })
   }
   return (
-    <Grid container rowSpacing={3} padding={3}>
+    <Grid container rowSpacing={3} padding={5}>
       <Grid item container justifyContent="center">
         {
           isInit ? null : 
           <Button
             variant="contained"
             disabled={isInit}
+            style={{
+              width: '300px',
+              height: '70px',
+              backgroundColor: '#6C221C',
+              color: '#ffffff',
+              textTransform: 'none',
+            }}
+            sx={{
+              borderRadius: '15px',
+            }}
             onClick={() => {
               callAPI()
             }}

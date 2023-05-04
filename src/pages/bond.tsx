@@ -8,12 +8,10 @@ import { useDaiContractAddressHook } from "../hooks/useContractAddress.hook"
 function Page () {
   return (
     <Grid sx={{
-      m: 4,
+      m: 0,
     }} container rowSpacing={4}>
-      <Grid container item justifyContent="center" xs={12}>
-        <Grid item xs={10}>
-          <BondCard />
-        </Grid>
+      <Grid container item justifyContent={'center'}>
+        <BondCard />
       </Grid>
     </Grid>
   )

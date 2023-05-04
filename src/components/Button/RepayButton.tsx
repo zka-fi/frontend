@@ -23,6 +23,12 @@ export function RepayButton ({ amount }: any) {
       variant="contained" 
       color="success" 
       disabled={loading}
+      style={{
+        textTransform: 'none',
+      }}
+      sx={{
+        width: '120px',
+      }}
       onClick={()=> {
         setLoading(true)
         repay()
@@ -31,7 +37,7 @@ export function RepayButton ({ amount }: any) {
           })
       }}
     >
-      Repay!
+      Repay
     </Button>
   )
 }

@@ -18,16 +18,16 @@ import Image from "next/image";
 
 const pages = [
   {
-    label: 'Dai',
-    link: '/dai',
+    label: 'Lend',
+    link: '/lend',
   },
   {
-    label: 'Bank',
-    link: '/merkle-tree'
+    label: 'Proof',
+    link: '/proof'
   },
   {
     label: 'Bond',
-    link: '/lender'
+    link: '/bond'
   },
 ]
 
@@ -46,8 +46,8 @@ export function ApplicationBar() {
     router.push(link)
   }
   return (
-    <AppBar position="static" style={{
-      backgroundColor: '#FFFFFF'
+    <AppBar position="static" elevation={0} style={{
+      backgroundColor: '#f1c27d'
     }}>
       <Container maxWidth="xl">
         <Toolbar 
@@ -64,7 +64,7 @@ export function ApplicationBar() {
             height={90}
             onClick={(e) => redirect(e, '/')}
           />
-          ({
+          {
             isConnected && !isReconnecting ? <Box sx={{ flexGrow: 1}}>
               <Tabs value={value} onChange={handleChange} centered>
                 {pages.map((page) => (
@@ -81,7 +81,7 @@ export function ApplicationBar() {
                 ))}
               </Tabs>
             </Box> : null
-          })
+          }
           
           <Box sx={{ flexGrow: 0 }}>
               <ConnectButton />
