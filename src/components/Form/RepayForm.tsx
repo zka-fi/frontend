@@ -9,6 +9,8 @@ import { DebtDisplay } from "../Display/DebtDisplay"
 import { CurrentBalanceDisplay } from "../Display/CurrentBalanceDisplay"
 import { useCurrentBalance } from "../../hooks/current-balance.hook"
 import { BigNumber } from "ethers"
+import { zkafiABI } from "../../contracts/zkafi"
+import { formatted } from "../../utils/ether-big-number"
 
 export function RepayForm ({
   loading,
@@ -16,7 +18,6 @@ export function RepayForm ({
   onComplete
 }: any) {
   const [amount, setAmount] = useState<number>()
-  const [debt, setDebt] = useState<number>()
   const [transactionLoading, setTransactionLoading] = useState(false)
   const { address } = useAccount()
   const balance = useCurrentBalance()
@@ -28,6 +29,13 @@ export function RepayForm ({
     functionName: 'allowance',
     args: [address!, zkafiAddress]
   })
+  const { data: debtValue } = useContractRead({
+    address: zkafiAddress,
+    abi: zkafiABI,
+    functionName: 'calculateRepayAmount',
+    args: [address]
+  })
+  const debt = debtValue !== undefined ? formatted(debtValue).toString() : null
   return (
     <Grid container justifyContent="center" rowSpacing={4}>
       <Grid container item>
@@ -37,11 +45,7 @@ export function RepayForm ({
         {
           transactionLoading || loading ? 
           <Skeleton variant="rectangular" width={260} height={10} />
-          : <DebtDisplay 
-              onChange={(debt: any) => {
-                setDebt(debt)
-              }}
-            />
+          : <DebtDisplay debt={debt}/>
         }
       </Grid>
       <Grid container item xs={12}>
@@ -51,6 +55,7 @@ export function RepayForm ({
               <OutlinedInput 
                 value={amount}
                 placeholder="enter repay amount"
+                type="number"
                 onChange={(e) => {
                   setAmount(Number(e.target.value))
                 }}
@@ -74,7 +79,7 @@ export function RepayForm ({
                   textTransform: 'none',
                 }}
                 onClick={() => {
-                  setAmount(debt)
+                  setAmount(Number(debt))
                 }}
               >
                 Max

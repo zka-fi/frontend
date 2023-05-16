@@ -13,11 +13,7 @@ export function GetMaxBalanceDisplay({
         <TextField 
           placeholder="Amount"
           value={amount}
-          onKeyPress={(event) => {
-            if (!/[0-9]/.test(event.key)) {
-              event.preventDefault();
-            }
-          }}
+          type="number"
           onChange={(e) => {
             const value = e.target.value
             setAmount(Number(value))
