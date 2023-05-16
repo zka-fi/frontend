@@ -36,6 +36,7 @@ function App({ Component, pageProps }: AppProps) {
       <ConnectKitProvider>
         <NextHead>
           <title>Zkafi</title>
+          <link rel="shortcut icon" href="/favicon.ico" />
         </NextHead>
         <ApplicationBar />
         <Container>
