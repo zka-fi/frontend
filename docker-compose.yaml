@@ -1,0 +1,48 @@
+version: '3.7'
+services:
+    couchserver:
+        container_name: zkafi-couchdb
+        image: couchdb
+        restart: always
+        ports:
+            - "5984:5984"
+        environment:
+            - COUCHDB_USER=admin
+            - COUCHDB_PASSWORD=WsonEYErSarDsODisHALigUN
+        networks:
+            - zkafi_network
+        volumes:
+            - ./dbdata:/opt/couchdb/data
+        
+    frontend:
+        container_name: zkafi-frontend
+        image: zkafi_frontend
+        ports:
+            - '3000:3000'
+        restart: always
+        networks:
+            - zkafi_network
+            - public_access
+        build:
+            context: ./
+            dockerfile: Dockerfile
+    caddy:
+        container_name: zkafi-caddy
+        image: caddy:latest
+        restart: unless-stopped
+        ports:
+            - "80:80"
+            - "443:443"
+        volumes:
+            - ./caddy/caddy_data:/data
+            - ./caddy/caddy_config:/config
+            - ./caddy/caddy_config/Caddyfile:/etc/caddy/Caddyfile
+        networks:
+            - public_access
+
+networks:
+    public_access:
+    zkafi_network:
+        name: zkafi_network
+        driver: bridge
+

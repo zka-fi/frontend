@@ -1,0 +1,6 @@
+demo.zkafi.com {
+    reverse_proxy zkafi-frontend:3000 {
+      flush_interval -1
+    }
+    encode zstd gzip
+}

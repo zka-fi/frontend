@@ -5,7 +5,7 @@ import { invokeFormat } from '../utils/ether-big-number'
 const couchdbConfig = {
   user: 'admin',
   password: 'WsonEYErSarDsODisHALigUN',
-  host: '35.89.79.195'
+  host: 'zkafi-couchdb'
 }
 
 export async function proofMerkleTree (tree: any, amount: number) {
